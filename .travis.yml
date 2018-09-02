@@ -4,7 +4,7 @@ sudo: required
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install --only-upgrade dpkg
+  - sudo apt-get install -y dpkg  # to upgrade to dpkg >= 1.17.5ubuntu5.8, which fixes https://bugs.launchpad.net/ubuntu/+source/dpkg/+bug/1730627
   - wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb
   - sudo dpkg -i libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb
   - rm libssl1.1_1.1.0g-2ubuntu4.1_amd64.deb
@@ -16,11 +16,9 @@ before_install:
 
 script:
   - make CC=$COMPILER KVER=$KVER_BUILD-generic CONFIG_PLATFORM_I386_PC=y
-
 env:
   global:
     - KERNEL_URL=http://kernel.ubuntu.com/~kernel-ppa/mainline/
-
 
 matrix:
   include:
@@ -31,6 +29,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-5
+            - libelf-dev
       env: COMPILER=gcc-5 KVER=4.19-rc1
     - compiler: gcc
       addons:
@@ -39,6 +38,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-6
+            - libelf-dev
       env: COMPILER=gcc-6 KVER=4.19-rc1
     - compiler: gcc
       addons:
@@ -47,6 +47,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-7
+            - libelf-dev
       env: COMPILER=gcc-7 KVER=4.19-rc1
     - compiler: gcc
       addons:
@@ -55,23 +56,8 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-5
-      env: COMPILER=gcc-5 KVER=4.15.18
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-6
-      env: COMPILER=gcc-6 KVER=4.15.18
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-7
-      env: COMPILER=gcc-7 KVER=4.15.18
+            - libelf-dev
+      env: COMPILER=gcc-5 KVER=4.14.67
     - compiler: gcc
       addons:
         apt:
@@ -79,68 +65,4 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-5
-      env: COMPILER=gcc-5 KVER=4.14.2
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-6
-      env: COMPILER=gcc-6 KVER=4.14.2
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-7
-      env: COMPILER=gcc-7 KVER=4.14.2
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-5
-      env: COMPILER=gcc-5 KVER=4.13.16
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-5
-      env: COMPILER=gcc-5 KVER=4.9.65
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-5
-      env: COMPILER=gcc-5 KVER=4.6.7
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-5
-      env: COMPILER=gcc-5 KVER=4.4.102
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-4.9
-      env: COMPILER=gcc-4.9 KVER=3.14.79
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-5
-      env: COMPILER=gcc-5 KVER=3.10.108
+      env: COMPILER=gcc-5 KVER=3.14.79
