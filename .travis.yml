@@ -26,7 +26,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-5
-      env: COMPILER=gcc-5 KVER=4.19.0
+      env: COMPILER=gcc-5 KVER=4.19-rc1
     - compiler: gcc
       addons:
         apt:
@@ -34,7 +34,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-6
-      env: COMPILER=gcc-6 KVER=4.19.0
+      env: COMPILER=gcc-6 KVER=4.19-rc1
     - compiler: gcc
       addons:
         apt:
@@ -42,7 +42,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-7
-      env: COMPILER=gcc-7 KVER=4.19.0
+      env: COMPILER=gcc-7 KVER=4.19-rc1
     - compiler: gcc
       addons:
         apt:
