@@ -130,7 +130,11 @@
 #endif
 
 	typedef struct 	semaphore _sema;
+#ifdef CONFIG_PREEMPT_RT
+	typedef	raw_spinlock_t	_lock;
+#else
 	typedef	spinlock_t	_lock;
+#endif
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,37))
 	typedef struct mutex 		_mutex;
 #else
@@ -220,32 +224,56 @@ __inline static _list	*get_list_head(_queue	*queue)
         
 __inline static void _enter_critical(_lock *plock, _irqL *pirqL)
 {
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_lock_irqsave(plock, *pirqL);
+#else
 	spin_lock_irqsave(plock, *pirqL);
+#endif
 }
 
 __inline static void _exit_critical(_lock *plock, _irqL *pirqL)
 {
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_unlock_irqrestore(plock, *pirqL);
+#else
 	spin_unlock_irqrestore(plock, *pirqL);
+#endif
 }
 
 __inline static void _enter_critical_ex(_lock *plock, _irqL *pirqL)
 {
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_lock_irqsave(plock, *pirqL);
+#else
 	spin_lock_irqsave(plock, *pirqL);
+#endif
 }
 
 __inline static void _exit_critical_ex(_lock *plock, _irqL *pirqL)
 {
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_unlock_irqrestore(plock, *pirqL);
+#else
 	spin_unlock_irqrestore(plock, *pirqL);
+#endif
 }
 
 __inline static void _enter_critical_bh(_lock *plock, _irqL *pirqL)
 {
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_lock_bh(plock);
+#else
 	spin_lock_bh(plock);
+#endif
 }
 
 __inline static void _exit_critical_bh(_lock *plock, _irqL *pirqL)
 {
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_unlock_bh(plock);
+#else
 	spin_unlock_bh(plock);
+#endif
 }
 
 __inline static int _enter_critical_mutex(_mutex *pmutex, _irqL *pirqL)

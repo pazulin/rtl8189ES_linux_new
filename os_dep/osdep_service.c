@@ -1143,7 +1143,11 @@ void	_rtw_spinlock_init(_lock *plock)
 
 #ifdef PLATFORM_LINUX
 
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_lock_init(plock);
+#else
 	spin_lock_init(plock);
+#endif
 
 #endif	
 #ifdef PLATFORM_FREEBSD
@@ -1198,7 +1202,11 @@ void	_rtw_spinlock(_lock	*plock)
 
 #ifdef PLATFORM_LINUX
 
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_lock(plock);
+#else
 	spin_lock(plock);
+#endif
 
 #endif
 #ifdef PLATFORM_FREEBSD
@@ -1217,7 +1225,11 @@ void	_rtw_spinunlock(_lock *plock)
 
 #ifdef PLATFORM_LINUX
 
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_unlock(plock);
+#else
 	spin_unlock(plock);
+#endif
 
 #endif
 #ifdef PLATFORM_FREEBSD
@@ -1236,7 +1248,11 @@ void	_rtw_spinlock_ex(_lock	*plock)
 
 #ifdef PLATFORM_LINUX
 
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_lock(plock);
+#else
 	spin_lock(plock);
+#endif
 
 #endif
 #ifdef PLATFORM_FREEBSD
@@ -1255,7 +1271,11 @@ void	_rtw_spinunlock_ex(_lock *plock)
 
 #ifdef PLATFORM_LINUX
 
+#ifdef CONFIG_PREEMPT_RT
+	raw_spin_unlock(plock);
+#else
 	spin_unlock(plock);
+#endif
 
 #endif
 #ifdef PLATFORM_FREEBSD
