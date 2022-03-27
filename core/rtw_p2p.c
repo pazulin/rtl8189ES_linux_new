@@ -3509,7 +3509,7 @@ _func_enter_;
 
 					rtw_p2p_set_state(pwdinfo, P2P_STATE_LISTEN);
 					if(!check_buddy_mlmeinfo_state(padapter, WIFI_FW_AP_STATE) &&
-					!(pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE)
+					   !((pmlmeinfo->state&0x03) == WIFI_FW_AP_STATE))
 					{
 						val8 = 1;
 						rtw_hal_set_hwreg(padapter, HW_VAR_MLME_SITESURVEY, (u8 *)(&val8));

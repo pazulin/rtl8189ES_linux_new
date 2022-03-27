@@ -1381,7 +1381,11 @@ thread_return rtl8188es_xmit_thread(thread_context context)
 	RT_TRACE(_module_hal_xmit_c_, _drv_notice_, ("-%s\n", __FUNCTION__));
 	DBG_871X("exit %s\n", __FUNCTION__);
 
-	thread_exit();
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 17, 0)
+   thread_exit();
+#else
+   kthread_exit();
+#endif
 }
 #endif
 

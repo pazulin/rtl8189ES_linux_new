@@ -12922,7 +12922,12 @@ thread_return lbk_thread(thread_context context)
 
 	ploopback->bstop = _TRUE;
 
-	thread_exit();
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 17, 0)
+   thread_exit();
+#else
+   kthread_exit(0);
+#endif
+
 }
 
 static void loopbackTest(PADAPTER padapter, u32 cnt, u32 size, u8* pmsg)

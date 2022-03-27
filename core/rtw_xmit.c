@@ -4732,7 +4732,12 @@ thread_return rtw_xmit_thread(thread_context context)
 
 	_rtw_up_sema(&padapter->xmitpriv.terminate_xmitthread_sema);
 
-	thread_exit();
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 17, 0)
+   thread_exit();
+#else
+   kthread_exit();
+#endif
+
 }
 #endif
 

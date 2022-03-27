@@ -1272,7 +1272,11 @@ exit:
 	pmptx->pallocated_buf = NULL;
 	pmptx->stop = 1;
 
-	thread_exit();
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 17, 0)
+   thread_exit();
+#else
+   kthread_exit();
+#endif
 }
 
 void fill_txdesc_for_mp(PADAPTER padapter, u8 *ptxdesc)
