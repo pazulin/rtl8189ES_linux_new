@@ -16,6 +16,7 @@
 
 #include <drv_types.h>
 #include <hal_data.h>
+#include <linux/random.h>
 
 #ifdef CONFIG_TDLS
 #define ONE_SEC 	1000 /* 1000 ms */
@@ -2808,10 +2809,7 @@ void rtw_build_tdls_setup_req_ies(_adapter *padapter, struct xmit_frame *pxmitfr
 
 	/* SNonce */
 	if (pattrib->encrypt) {
-		for (i = 0; i < 8; i++) {
-			time = rtw_get_current_time();
-			_rtw_memcpy(&ptdls_sta->SNonce[4 * i], (u8 *)&time, 4);
-		}
+		get_random_bytes(&ptdls_sta->SNonce, 32);
 	}
 
 	pframe_head = pframe;	/* For rtw_tdls_set_ht_cap() */
@@ -2884,10 +2882,7 @@ void rtw_build_tdls_setup_rsp_ies(_adapter *padapter, struct xmit_frame *pxmitfr
 	u8 *pframe_head;
 
 	if (pattrib->encrypt) {
-		for (k = 0; k < 8; k++) {
-			time = rtw_get_current_time();
-			_rtw_memcpy(&ptdls_sta->ANonce[4 * k], (u8 *)&time, 4);
-		}
+		get_random_bytes(&ptdls_sta->ANonce, 32);
 	}
 
 	pframe_head = pframe;
